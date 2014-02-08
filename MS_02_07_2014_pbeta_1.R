@@ -1,3 +1,4 @@
+# change a little bit to test with Git
 # source("http://bioconductor.org/biocLite.R")
 # biocLite("qvalue")
 setwd("P:/FDR dependence/Model Selection/logoffset_in_simulation_logoffset_in_model_negative_beta_positive_beta_50_50/result/pbeta_1")
