@@ -361,11 +361,11 @@ sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
 
 
 p.beta <- c(0,  0.2, 0.5 , 0.8, 1)
-i.beta <- c(0.1, 3)
-e.beta <- c(.5,  4)
+i.beta <- c(0.1, 1.5)
+e.beta <- c(.5,  2)
 S <- c(1.25, 2)
-L <- c(0.1 ,3)
-U <- c(0.5, 4)
+L <- c(0.1 ,1.5)
+U <- c(0.5, 2)
 
 n.sim <- 100
 auc.nocov <- array(0, dim=c(length(p.beta), length(i.beta), length(S), length(L), n.sim))
@@ -419,11 +419,11 @@ sd.res.fdp.aic <- array(0, dim=c(length(p.beta), length(i.beta), length(S), leng
 sd.res.fdp.true <- array(0, dim=c(length(p.beta), length(i.beta), length(S), length(L),4))
 
 
-#
+
 
 # set.seed(1)
-# sim <- sim.counts(p.beta[5], 3, 4, S[1], 3, 4)
-# sim <- sim.counts(p.beta[5], .1, .5, S[1], 3, 4)
+# sim <- sim.counts(p.beta[5], 1.5, 2, S[1], 2, 3)
+# sim <- sim.counts(p.beta[5], 1.5, 2, S[1], 1.5,2)
 # sim <- sim.counts(p.beta[5], 3, 4, S[1], .1, .5)
 # counts <- sim$counts
 # mu <- sim$mu
@@ -450,8 +450,8 @@ sd.res.fdp.true <- array(0, dim=c(length(p.beta), length(i.beta), length(S), len
 #     # e <- 0
 #     # #i <- 2
 #     #dev.off()
-#     i <- j <- 18
-#     e <- 1
+#     i <- j <- 27
+#     e <- 6
 #     par(mfrow = c(2,2))
 #     for (i in 1:4+ 4*e)
 #     {
@@ -461,7 +461,6 @@ sd.res.fdp.true <- array(0, dim=c(length(p.beta), length(i.beta), length(S), len
 #       points(x[1,], log(counts[i,1:K]+1), pch = 16, col = "red")
 #       mod1 <- lm(log(counts[i,]+1)~ rep(c(1,2), each = K))
 #       mod2 <- lm(log(counts[i,]+1)~ rep(c(1,2), each = K) + c(x[1,],x[2,]))
-#       #str(anova(mod1))
 #       anova(mod1)[[5]][1]
 #       anova(mod2)[[5]][1]
 #       }

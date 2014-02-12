@@ -361,11 +361,11 @@ sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
 
 
 p.beta <- c(0,  0.2, 0.5 , 0.8, 1)
-i.beta <- c(0.1, 3)
-e.beta <- c(.5,  4)
+i.beta <- c(0.1, 1.5)
+e.beta <- c(.5,  2)
 S <- c(1.25, 2)
-L <- c(0.1 ,3)
-U <- c(0.5, 4)
+L <- c(0.1 ,1.5)
+U <- c(0.5, 2)
 
 n.sim <- 100
 auc.nocov <- array(0, dim=c(length(p.beta), length(i.beta), length(S), length(L), n.sim))
