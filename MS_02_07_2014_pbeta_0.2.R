@@ -1,13 +1,12 @@
 # source("http://bioconductor.org/biocLite.R")
 # biocLite("qvalue")
-#change 5
 setwd("P:/FDR dependence/Model Selection/logoffset_in_simulation_logoffset_in_model_negative_beta_positive_beta_50_50/result/pbeta_0.2")
 getwd()
 library("xtable")
 library("plyr")
 library("edgeR")
 library("qvalue")
-#library("QuasiSeq")
+library("QuasiSeq")
 library("maps")
 library(clinfun)
 library("fields")
@@ -18,10 +17,10 @@ source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/hybrid-poisson-test-vc.R")
 source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified0.R")
 source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified1.R")
 source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/fdrtool_1.2.10/fdrtool/R/ecdf.pval.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.fit2.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\NBDev.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\PoisDev.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.fit2.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\NBDev.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\PoisDev.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
 
 # Load RFI count.mean and NBdisp from model0RFI.line
 
@@ -145,7 +144,6 @@ fdp <- function(pvalue, qvalue.threshold){
 
 sim.counts <- function(p.beta, i.beta, e.beta, S, L, U){
   omega <- NULL
-  phi <- matrix(0, nrow = I, ncol = K) # log.offset
   tau <- matrix(0, nrow = I, ncol = J) # treatment value
   x <- matrix(0, nrow = I, ncol = K) # covariate value
   beta <- matrix(0, nrow = I, ncol = J) # coefficients of covariate
@@ -157,8 +155,6 @@ sim.counts <- function(p.beta, i.beta, e.beta, S, L, U){
   
   for(i in 1:I){
     for(k in 1:K){
-      #phi[i,k] <- rnorm(1,0,0)
-      phi[i,k] <- rnorm(1,0,.125)
       x[i,k] <- rnorm(1,0,1)
     }
   }
@@ -176,33 +172,36 @@ sim.counts <- function(p.beta, i.beta, e.beta, S, L, U){
   
   mu <- array(0, dim = c(I,J,K))
   y <- array(0, dim = c(I,J,K))
+  mean.sim <- NULL
   
   for(j in 1:J){
     repeat{
       if (1<=j &j <= DE){
         j.p <- sample(1:length(mean.count), 1 )
+        mean.sim[j] <- mean.count[j.p]
         b1[j] <- 1/rgamma(1, shape = S*log(mean.count[j.p])^(1/8), scale = 1)
         b2[j] <- runif(1, L,U)
         b[j] <- b1[j] +b2[j]
         trt.ind <- rbinom(1,1,.5)
         if (trt.ind ==1){
           tau[1,j] <- log(mean.count[j.p]/sqrt(b[j]))
-          tau[2,j] <- log(mean.count[j.p]*sqrt(b[j]) + 5)
+          tau[2,j] <- log(mean.count[j.p]*sqrt(b[j]))
         } else{
-          tau[2,j] <- log(mean.count[j.p]/sqrt(b[j]))
-          tau[1,j] <- log(mean.count[j.p]*sqrt(b[j]) + 5)
+          tau[1,j] <- log(mean.count[j.p]/sqrt(b[j]))
+          tau[2,j] <- log(mean.count[j.p]*sqrt(b[j]))
         }
         omega[j] <- nb.disp[j.p]
       }
       if ((DE +1) <= j){
         j.p <- sample(1:length(mean.count), 1 )
+        mean.sim[j] <- mean.count[j.p]
         tau[1,j] <- log(mean.count[j.p])
         tau[2,j] <- log(mean.count[j.p])
         omega[j] <- nb.disp[j.p] 
       }
       for(i in 1:I){
         for(k in 1:K){
-          mu[i,j,k] <- exp(phi[i,k]+tau[i,j]+beta[i,j]*x[i,k])
+          mu[i,j,k] <- exp(tau[i,j]+beta[i,j]*x[i,k])
           y[i,j,k]  <- rnbinom(n=1, size=1/omega[j], mu=mu[i,j,k])
         }
       }
@@ -211,9 +210,13 @@ sim.counts <- function(p.beta, i.beta, e.beta, S, L, U){
   }
   
   counts <- cbind(y[1,,],y[2,,])
-  dput(counts)
-  dput(x)
-  return(list(counts= counts, x = x, beta.ind = beta.ind))
+  return(list(counts= counts, x = x, 
+              beta.ind = beta.ind, 
+              trt.ind = trt.ind, 
+              beta = beta, mean.sim = mean.sim, 
+              tau = tau, 
+              mu =cbind(mu[1,,],mu[2,,]),
+              b = b))
 }
 
 
@@ -239,7 +242,6 @@ sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
   design.list[[2]] <- rep(1, ncol(counts))
   size <- apply(counts, 2, quantile, .75)
   fit <- QL.fit(counts, design.list, 
-                log.offset = log(size), 
                 Model = "NegBin",
                 print.progress=FALSE)
   
@@ -257,7 +259,6 @@ sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
   row.names(test.mat) <- c("Covariate", "Treatment")
   fit.2 <- QL.fit(counts, design.list, 
                   test.mat,
-                  log.offset = log(size), 
                   Model="NegBin", 
                   print.progress=FALSE)
   
@@ -360,11 +361,11 @@ sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
 
 
 p.beta <- c(0,  0.2, 0.5 , 0.8, 1)
-i.beta <- c(0.1, 1)
-e.beta <- c(.5, 1.5)
+i.beta <- c(0.1, 3)
+e.beta <- c(.5,  4)
 S <- c(1.25, 2)
-L <- c(0.25, 1)
-U <- c(0.75, 1.5)
+L <- c(0.1 ,3)
+U <- c(0.5, 4)
 
 n.sim <- 100
 auc.nocov <- array(0, dim=c(length(p.beta), length(i.beta), length(S), length(L), n.sim))
@@ -420,11 +421,55 @@ sd.res.fdp.true <- array(0, dim=c(length(p.beta), length(i.beta), length(S), len
 
 #
 
-
+# set.seed(1)
+# sim <- sim.counts(p.beta[5], 3, 4, S[1], 3, 4)
+# sim <- sim.counts(p.beta[5], .1, .5, S[1], 3, 4)
+# sim <- sim.counts(p.beta[5], 3, 4, S[1], .1, .5)
+# counts <- sim$counts
+# mu <- sim$mu
+# tau <- sim$tau
+# dim(mu)
+# x <- sim$x
+# dim(x)
+# beta <- sim$beta
+# mean.sim <- sim$mean.sim
+# dev.off()
+# 
+# j <- i <- 1
+# log(mean.sim[j])
+# plot(c(x[1,],x[2,]), log(mu[j,]))
+# plot(c(x[1,],x[2,]), log(counts[j,]+1))
+# tau[,j]
+# b <- sim$b
+# log(b[j])
+# log(mean.sim[j])
+#     # counts[23,1:K]
+#     # counts[23,K+1:K]
+#     # 
+#     # # i <- 7,13,28,31,34,36
+#     # e <- 0
+#     # #i <- 2
+#     #dev.off()
+#     i <- j <- 18
+#     e <- 1
+#     par(mfrow = c(2,2))
+#     for (i in 1:4+ 4*e)
+#     {
+#       log(counts[i,1:K]+1)-log(counts[i,K+1:K]+1)
+#       
+#       plot(c(x[1,],x[2,]), log(counts[i,]+1),main =i)
+#       points(x[1,], log(counts[i,1:K]+1), pch = 16, col = "red")
+#       mod1 <- lm(log(counts[i,]+1)~ rep(c(1,2), each = K))
+#       mod2 <- lm(log(counts[i,]+1)~ rep(c(1,2), each = K) + c(x[1,],x[2,]))
+#       #str(anova(mod1))
+#       anova(mod1)[[5]][1]
+#       anova(mod2)[[5]][1]
+#       }
+#     
 
 ################
 ##############
-
+# i <- 5; j <- 1;k <- 1; l <- 2; m <- 1
 
 for(i in 2){
   for(j in 1:length(i.beta)){

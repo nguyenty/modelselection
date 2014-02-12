@@ -2,7 +2,7 @@ library("xtable")
 library("plyr")
 library("edgeR")
 library("qvalue")
-#library("QuasiSeq")
+library("QuasiSeq")
 library("maps")
 library(clinfun)
 library("fields")
@@ -13,10 +13,10 @@ source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/hybrid-poisson-test-vc.R")
 source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified0.R")
 source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified1.R")
 source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/fdrtool_1.2.10/fdrtool/R/ecdf.pval.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.fit2.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\NBDev.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\PoisDev.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.fit2.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\NBDev.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\PoisDev.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
 
 # pbeta = 1
 # "i =  5 ,j =  1 ,k =  1 ,l =  1 ,m =  37"
@@ -324,7 +324,6 @@ fit <- QL.fit(counts[,], design.list,
               Model = "NegBin",
               print.progress=FALSE)
 
-traceback()
 result.fit <- QL.results(fit, Plot=FALSE)
 
 
@@ -357,9 +356,32 @@ design <- design.list[[1]]
 dim(design)
 d<-DGEList(counts = counts, group = design[,2],lib.size=exp(log.offset))
 d <- calcNormFactors(d)
-d
-?calcNormFactors
-
+str(d)
+# d$dispersions
+# ?calcNormFactors
+# out.d <- estimateGLMTrendedDisp(d, design)
+# str(out.d$trended.dispersion)
+# 
+# nb.disp<-estimateGLMTrendedDisp(d, design)$trended.dispersion
+# traceback()
+# aveLogCPM(d)
+# lib.size <- d$samples$lib.size
+# lib.size <- lib.size*d$samples$norm.factors
+# aveLogCPM(d$counts,lib.size=lib.size)
+# traceback()
+# y <- d$counts
+# aveLogCPM <- function(y,lib.size=NULL,prior.count=2,dispersion=0.05, ...)
+#   #  log2(AveCPM)
+#   #  Gordon Smyth
+#   #	25 Aug 2012. Last modified 11 March 2012.
+# {
+#   y <- as.matrix(y)
+#   if(is.null(lib.size)) lib.size <- colSums(y)
+#   prior.count.scaled <- lib.size/mean(lib.size) * prior.count
+#   offset <- log(lib.size+2*prior.count.scaled)
+#   abundance <- mglmOneGroup(t(t(y)+prior.count.scaled),dispersion=dispersion,offset=offset)
+#   (abundance+log(1e6)) / log(2)
+# }
 
 ###############
 object <- d
@@ -381,13 +403,19 @@ if (nrow(x) == 0 || ncol(x) == 1)
 refColumn <- NULL
 logratioTrim = 0.3; sumTrim = 0.05; 
 doWeighting = TRUE; Acutoff = -1e+10; p = 0.75
-
+#x <- counts
+# dim(counts)
 f75 <- .calcFactorQuantile(data=x, lib.size=lib.size, p=0.75)
 if( is.null(refColumn) )
   refColumn <- which.min(abs(f75-mean(f75)))
 
 if(length(refColumn)==0 | refColumn < 1 | refColumn > ncol(x)) refColumn <- 1
+#refColumn
+
+logratioTrim=.3; sumTrim=0.05; doWeighting=TRUE; Acutoff=-1e10; p=0.75
 f <- rep(NA,ncol(x))
+
+
 for(i in 1:ncol(x))
   f[i] <- .calcFactorWeighted(obs=x[,i],ref=x[,refColumn], libsize.obs=lib.size[i], 
                               libsize.ref=lib.size[refColumn],
@@ -399,7 +427,7 @@ f[i]
 f
 f <- f/exp(mean(log(f)))
 f
-# i = 24 
+# i = 36 
 ################
 
 .calcFactorRLE <- function (data)
@@ -422,7 +450,7 @@ size
   #	f/exp(mean(log(f)))
 }
 #############
-
+i <- 1
 obs=x[,i];ref=x[,refColumn]; libsize.obs=lib.size[i]; 
 libsize.ref=lib.size[refColumn];
 logratioTrim=logratioTrim; sumTrim=sumTrim;
@@ -469,4 +497,5 @@ doWeighting=doWeighting; Acutoff=Acutoff;
   else
     2^( mean(logR[keep], na.rm=TRUE) )
 }
-
+2^1023
+.Machine
