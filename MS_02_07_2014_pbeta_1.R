@@ -17,6 +17,46 @@ source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/hybrid-poisson-test-vc.R")
 source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified0.R")
 source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified1.R")
 source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/fdrtool_1.2.10/fdrtool/R/ecdf.pval.R")
+
+# # RFI output data
+# dat <- read.table("U:/R/RA/Data/RFI_uniq_comb_count_corrected.txt")
+# meta.data <- read.csv("U:/R/RA/Data/RIN values RNAseq Obj3a Martine.csv")
+# meta.data2 <- read.table("U:/R/RA/Data/Meta.data2.txt")
+# 
+# name <- paste("X",meta.data$Sample.Name, sep = "")
+# dat2 <- dat[, name]
+# #colnames(dat2)
+# Lane.RNAseq <- as.factor(meta.data$Lane.RNAseq)
+# Diet <- meta.data$diet
+# Line <- meta.data$line
+# #RFI.value <- meta.data2$RFI.value
+# RFI.value <- meta.data2$RFI.value
+# RIN.before.GD <- meta.data$RIN.before.GD
+# RIN.after.GD  <- meta.data$RIN.after.GD
+# Conc.after.GD <- meta.data$Conc.after.GD.ng.ul
+# date.GD <- meta.data$date.GD
+# date.RNA.extraction <- meta.data$date.RNA.extraction
+# counts <- as.matrix(dat2[rowSums(dat2>0)>1&
+#                            rowMeans(dat2)>1,])
+# dim(counts)
+# 
+# summary(log(counts+1))
+# mean.1 <- apply(log(counts[,Line ==1]+1), 1, mean)
+# mean.2 <- apply(log(counts[,Line ==2]+1), 1, mean)
+# summary(mean.1 - mean.2)
+# 
+# wd <- "P:\\FDR dependence\\Model Selection\\logoffset_in_simulation_logoffset_in_model_negative_beta_positive_beta_50_50\\result\\pbeta_1"
+# 
+# sim.dat1 <- load(file = paste(wd, "\\p.beta_1i.beta_1.5e.beta_2S_2L_0.1U_0.5m_29.RData", sep = ""))
+# str(sim.dat1)
+# counts <- sim1$counts
+# summary(log(counts+1))
+# mean.1 <- apply(log(counts[,1:20]+1), 1, mean)
+# mean.2 <- apply(log(counts[,21:40]+1), 1, mean)
+# summary(mean.1 - mean.2)
+# str(sim1)
+
+
 # source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.fit2.R")
 # source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\NBDev.R")
 # source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\PoisDev.R")
