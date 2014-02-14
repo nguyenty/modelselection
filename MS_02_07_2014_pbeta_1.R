@@ -280,8 +280,10 @@ sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
   design.list <- vector("list",2)
   design.list[[1]] <- rep(1:2, each = K)
   design.list[[2]] <- rep(1, ncol(counts))
-  size <- apply(counts, 2, quantile, .75)
+  #size <- apply(counts, 2, quantile, .75)
+  size <- apply(counts, 2, sum)
   fit <- QL.fit(counts, design.list, 
+                log.offset = log(size),
                 Model = "NegBin",
                 print.progress=FALSE)
   
@@ -298,6 +300,7 @@ sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
   test.mat <- rbind(1:2, c(1,3))
   row.names(test.mat) <- c("Covariate", "Treatment")
   fit.2 <- QL.fit(counts, design.list, 
+                  log.offset = log(size),
                   test.mat,
                   Model="NegBin", 
                   print.progress=FALSE)
