@@ -261,7 +261,6 @@ sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
   row.names(test.mat) <- c("Covariate", "Treatment")
   fit.2 <- QL.fit(counts, design.list, 
                   test.mat,
-                  log.offset = log(size),
                   Model="NegBin", 
                   log.offset = log(size),
                   print.progress=FALSE)
