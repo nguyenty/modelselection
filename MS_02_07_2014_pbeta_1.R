@@ -19,10 +19,10 @@ source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/hybrid-poisson-test-vc.R")
 source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified0.R")
 source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified1.R")
 source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/fdrtool_1.2.10/fdrtool/R/ecdf.pval.R")
-# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.fit2.R")
-# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\NBDev.R")
-# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\PoisDev.R")
-# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
+source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.fit2.R")
+source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\NBDev.R")
+source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\PoisDev.R")
+source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
 
 # # RFI output data
 # dat <- read.table("U:/R/RA/Data/RFI_uniq_comb_count_corrected.txt")
@@ -83,8 +83,8 @@ nb.disp <- fit.line.rfi$NB.disp
 
 
 I <- 2
-J <- 100
-K <- 10
+J <- 1000
+K <- 20
 DE <- round(J*.2)
 EE <- J - DE
 
@@ -269,13 +269,13 @@ sim.counts <- function(p.beta, i.beta, e.beta, S, L, U){
 
 
 # Initial parameter for check functions
-S <- 1.25
-L <- 1
-U <- 1.5
-
-p.beta <- 1
-i.beta <- .1
-e.beta <- .5
+# S <- 1.25
+# L <- 1
+# U <- 1.5
+# 
+# p.beta <- 1
+# i.beta <- .1
+# e.beta <- .5
 
 
 sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
