@@ -147,6 +147,7 @@ sim.counts <- function(p.beta, i.beta, e.beta, S, L, U){
   tau <- matrix(0, nrow = I, ncol = J) # treatment value
   x <- matrix(0, nrow = I, ncol = K) # covariate value
   beta <- matrix(0, nrow = I, ncol = J) # coefficients of covariate
+  phi <- matrix(0, nrow = I, ncol = K) # offset value
   b <- NULL
   b1 <- NULL
   b2 <- NULL
@@ -156,6 +157,7 @@ sim.counts <- function(p.beta, i.beta, e.beta, S, L, U){
   for(i in 1:I){
     for(k in 1:K){
       x[i,k] <- rnorm(1,0,1)
+      phi[i,k] <- rnorm(1,0,.125^2)
     }
   }
   
@@ -201,7 +203,7 @@ sim.counts <- function(p.beta, i.beta, e.beta, S, L, U){
       }
       for(i in 1:I){
         for(k in 1:K){
-          mu[i,j,k] <- exp(tau[i,j]+beta[i,j]*x[i,k])
+          mu[i,j,k] <- exp(phi[i,k]+tau[i,j]+beta[i,j]*x[i,k])
           y[i,j,k]  <- rnbinom(n=1, size=1/omega[j], mu=mu[i,j,k])
         }
       }
