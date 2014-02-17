@@ -6,7 +6,7 @@ library("xtable")
 library("plyr")
 library("edgeR")
 library("qvalue")
-#library("QuasiSeq")
+##library("QuasiSeq")
 library("maps")
 library(clinfun)
 library("fields")
@@ -157,7 +157,8 @@ sim.counts <- function(p.beta, i.beta, e.beta, S, L, U){
   for(i in 1:I){
     for(k in 1:K){
       x[i,k] <- rnorm(1,0,1)
-      phi[i,k] <- rnorm(1,0,.125^2)
+      phi[i,k] <- rnorm(1,0,0)
+      #phi[i,k] <- rnorm(1,0,.125^2)
     }
   }
   
@@ -245,7 +246,7 @@ sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
   #size <- apply(counts, 2, quantile, .75)
   size <- apply(counts, 2, sum)
   fit <- QL.fit(counts, design.list, 
-                log.offset = log(size),
+                #log.offset = log(size),
                 Model = "NegBin",
                 print.progress=FALSE)
   
@@ -263,7 +264,7 @@ sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
   row.names(test.mat) <- c("Covariate", "Treatment")
   fit.2 <- QL.fit(counts, design.list, 
                   test.mat,
-                  log.offset = log(size),
+                 # log.offset = log(size),
                   Model="NegBin", 
                   print.progress=FALSE)
   

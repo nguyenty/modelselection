@@ -157,7 +157,8 @@ sim.counts <- function(p.beta, i.beta, e.beta, S, L, U){
   for(i in 1:I){
     for(k in 1:K){
       x[i,k] <- rnorm(1,0,1)
-      phi[i,k] <- rnorm(1,0,.125^2)
+      #phi[i,k] <- rnorm(1,0,.125^2)
+      phi[i,k] <- rnorm(1,0,0)
     }
   }
   
@@ -246,7 +247,7 @@ sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
   size <- apply(counts, 2, sum)
   fit <- QL.fit(counts, design.list, 
                 Model = "NegBin",
-                log.offset = log(size),
+     #           log.offset = log(size),
                 print.progress=FALSE)
   
   result.fit <- QL.results(fit, Plot=FALSE)
@@ -264,7 +265,7 @@ sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
   fit.2 <- QL.fit(counts, design.list, 
                   test.mat,
                   Model="NegBin", 
-                  log.offset = log(size),
+       #           log.offset = log(size),
                   print.progress=FALSE)
   
   result.fit2 <- QL.results(fit.2,Plot= FALSE)
