@@ -1,28 +1,56 @@
-# source("http://bioconductor.org/biocLite.R")
-# biocLite("qvalue")
+ source("http://bioconductor.org/biocLite.R")
+# biocLite("egdeR")
+library("edgeR")
+ biocLite("qvalue")
 #sessionInfo()
-setwd("P:/FDR dependence/Model Selection/logoffset_in_simulation_logoffset_in_model_negative_beta_positive_beta_50_50/result/pbeta_1")
-getwd()
+# setwd("P:/FDR dependence/Model Selection/logoffset_in_simulation_logoffset_in_model_negative_beta_positive_beta_50_50/result/pbeta_1")
+# getwd()
 library("xtable")
 library("plyr")
 library("edgeR")
-library("qvalue")
+#library("qvalue")
 #library("QuasiSeq")
 #detach("QuasiSeq")
 library("maps")
 library(clinfun)
 library("fields")
 library("fdrtool")
-source('P:/qvalue_1.34.0/qvalue/R/qvalue_m0.R')
+
+mainDir <- "/home/ntyet/research/modelselection" # linux
+#mainDir <- "P:/research/modelselection" # Windows
+pbeta1 <- "pbeta_1"
+dir.create(file.path(mainDir, pbeta1), showWarnings = FALSE)
+sources <- "sources"
+dir.create(file.path(mainDir, sources), showWarnings = FALSE)
+dir.source <- file.path(mainDir, sources)
+dir.pbeta1 <- file.path(mainDir, pbeta1)
+setwd(dir.pbeta1)
+getwd()
+# for windows: 
+# source('P:/qvalue_1.34.0/qvalue/R/qvalue_m0.R')
+# source("http://www.public.iastate.edu/~dnett/microarray/multtest.txt")
+# source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/hybrid-poisson-test-vc.R")
+# source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified0.R")
+# source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified1.R")
+# source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/fdrtool_1.2.10/fdrtool/R/ecdf.pval.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.fit2.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\NBDev.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\PoisDev.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
+
+
+# for linux 
+source(paste(dir.source, '/qvalue_1.34.0/qvalue/R/qvalue_m0.R', sep = ""))
 source("http://www.public.iastate.edu/~dnett/microarray/multtest.txt")
-source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/hybrid-poisson-test-vc.R")
-source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified0.R")
-source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified1.R")
-source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/fdrtool_1.2.10/fdrtool/R/ecdf.pval.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.fit2.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\NBDev.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\PoisDev.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
+source(paste(dir.source, "/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/hybrid-poisson-test-vc.R", sep = ""))
+source(paste(dir.source, "/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified0.R",sep =""))
+source(paste(dir.source, "/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified1.R",sep =""))
+source(paste(dir.source, "/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/fdrtool_1.2.10/fdrtool/R/ecdf.pval.R",sep =""))
+source(paste(dir.source, "/stevescode/QuasiSeq_1.0-2/QuasiSeq/R/QL.fit2.R",sep=""))
+source(paste(dir.source, "/stevescode/QuasiSeq_1.0-2/QuasiSeq/R/NBDev.R",sep =""))
+source(paste(dir.source, "/stevescode/QuasiSeq_1.0-2/QuasiSeq/R/PoisDev.R",sep =""))
+source(paste(dir.source, "/stevescode/QuasiSeq_1.0-2/QuasiSeq/R/QL.results.R",sep =""))
+
 
 # # RFI output data
 # dat <- read.table("U:/R/RA/Data/RFI_uniq_comb_count_corrected.txt")
@@ -70,9 +98,18 @@ source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
 
 # Load RFI count.mean and NBdisp from model0RFI.line
 
+# 
+# load(file = "U:/R/RA/Data/Additional Plot/Model0.line.rfi.RData")
+# load(file = "U:/R/RA/Data/Additional Plot/Model0.result.line.rfi.RData")
 
-load(file = "U:/R/RA/Data/Additional Plot/Model0.line.rfi.RData")
-load(file = "U:/R/RA/Data/Additional Plot/Model0.result.line.rfi.RData")
+#load(file = "U:/R/RA/Data/Additional Plot/Model0.line.rfi.RData")
+#load(file = "U:/R/RA/Data/Additional Plot/Model0.result.line.rfi.RData")
+# 
+# load(file ="/run/user/1000/gvfs/smb-share:server=cyfiles.iastate.edu,share=09/22/ntyet//R/RA/Data/Additional Plot/Model0.line.rfi.RData")
+# load(file ="/run/user/1000/gvfs/smb-share:server=cyfiles.iastate.edu,share=09/22/ntyet//R/RA/Data/Additional Plot/Model0.result.line.rfi.RData")
+load(file = paste(dir.source, "/Model0.line.rfi.RData",sep = ""))
+load(file = paste(dir.source,"/Model0.result.line.rfi.RData",sep = ""))
+
 #counts <- as.matrix(dat2[rowSums(dat2>0)>1&
 #                           rowMeans(dat2)>1,])
 #################################################
@@ -199,15 +236,21 @@ sim.counts <- function(p.beta, i.beta, e.beta, S, L, U){
   b2 <- NULL
   
   # generate phi and covariate x
-  
-  for(i in 1:I){
-    for(k in 1:K){
-      x[i,k] <- rnorm(1,0,1)
-      #phi[i,k] <- rnorm(1,0,.125^2)
-      phi[i,k] <- rnorm(1,0,0)
-    }
+  for(k in 1:K){
+    x[1,k] <- x[2,k] <- rnorm(1,0,1)
+    #phi[i,k] <- rnorm(1,0,.125^2)
+    phi[1,k] <- phi[2,k] <- rnorm(1,0,0)
   }
   
+#   
+#   for(i in 1:I){
+#     for(k in 1:K){
+#       x[i,k] <- rnorm(1,0,1)
+#       #phi[i,k] <- rnorm(1,0,.125^2)
+#       phi[i,k] <- rnorm(1,0,0)
+#     }
+#   }
+
   # genetating beta which is the coefficients of covariates
   
   beta.ind <- NULL
@@ -279,7 +322,10 @@ sim.counts <- function(p.beta, i.beta, e.beta, S, L, U){
 # p.beta <- 1
 # i.beta <- .1
 # e.beta <- .5
-
+# I
+# J
+# K
+# sim.counts(p.beta, i.beta, e.beta, S, L, U)
 
 sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
   sim.data <- sim.counts(p.beta, i.beta, e.beta, S, L, U)
