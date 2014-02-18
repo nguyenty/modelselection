@@ -24,8 +24,8 @@ sources <- "sources"
 dir.create(file.path(mainDir, sources), showWarnings = FALSE)
 dir.source <- file.path(mainDir, sources)
 dir.pbeta1 <- file.path(mainDir, pbeta1)
-setwd(dir.pbeta1)
-getwd()
+#setwd(dir.pbeta1)
+#getwd()
 # for windows: 
 # source('P:/qvalue_1.34.0/qvalue/R/qvalue_m0.R')
 # source("http://www.public.iastate.edu/~dnett/microarray/multtest.txt")
@@ -465,7 +465,7 @@ S <- c(1.25, 2)
 L <- c(0.1 ,1.5)
 U <- c(0.5, 2)
 
-n.sim <- 100
+n.sim <- 50
 auc.nocov <- array(0, dim=c(length(p.beta), length(i.beta), length(S), length(L), n.sim))
 auc.cov <- array(0, dim=c(length(p.beta), length(i.beta), length(S), length(L), n.sim))
 auc.ebp <- array(0, dim=c(length(p.beta), length(i.beta), length(S), length(L), n.sim))
@@ -575,7 +575,7 @@ for(i in 5){
       for(l in 1:length(U)){
         for(m in 1:n.sim){
           sim1 <- sim.QLfit(p.beta[i], i.beta[j], e.beta[j], S[k], L[l], U[l])
-          pathsave <- paste(getwd(), 
+          pathsave <- paste(dir.pbeta1, 
                             "/p.beta_",
                             p.beta[i], 
                             "i.beta_",
@@ -650,39 +650,39 @@ for(i in 5){
   
 }
 traceback()
-save(res.auc.nocov, file = paste(getwd(), "/res.auc.nocov.RData", sep = ""))
-save(res.auc.cov, file = paste(getwd(), "/res.auc.cov.RData", sep = ""))
-save(res.auc.ebp, file = paste(getwd(), "/res.auc.ebp.RData", sep = ""))
-save(res.auc.g.ebp, file = paste(getwd(), "/res.auc.g.ebp.RData", sep = ""))
-save(res.auc.aic, file = paste(getwd(), "/res.auc.aic.RData", sep = ""))
-save(res.auc.true, file = paste(getwd(), "/res.auc.true.RData", sep = ""))
-save(res.auc.aebp, file = paste(getwd(), "/res.auc.aebp.RData", sep = ""))
-save(res.auc.g.aebp, file = paste(getwd(), "/res.auc.g.aebp.RData", sep = ""))
+save(res.auc.nocov, file = paste(dir.pbeta1, "/res.auc.nocov.RData", sep = ""))
+save(res.auc.cov, file = paste(dir.pbeta1, "/res.auc.cov.RData", sep = ""))
+save(res.auc.ebp, file = paste(dir.pbeta1, "/res.auc.ebp.RData", sep = ""))
+save(res.auc.g.ebp, file = paste(dir.pbeta1, "/res.auc.g.ebp.RData", sep = ""))
+save(res.auc.aic, file = paste(dir.pbeta1, "/res.auc.aic.RData", sep = ""))
+save(res.auc.true, file = paste(dir.pbeta1, "/res.auc.true.RData", sep = ""))
+save(res.auc.aebp, file = paste(dir.pbeta1, "/res.auc.aebp.RData", sep = ""))
+save(res.auc.g.aebp, file = paste(dir.pbeta1, "/res.auc.g.aebp.RData", sep = ""))
 
-save(res.fdp.nocov, file = paste(getwd(), "/res.fdp.nocov.RData", sep = ""))
-save(res.fdp.cov, file = paste(getwd(), "/res.fdp.cov.RData", sep = ""))
-save(res.fdp.ebp, file = paste(getwd(), "/res.fdp.ebp.RData", sep = ""))
-save(res.fdp.g.ebp, file = paste(getwd(), "/res.fdp.g.ebp.RData", sep = ""))
-save(res.fdp.aic, file = paste(getwd(), "/res.fdp.aic.RData", sep = ""))
-save(res.fdp.true, file = paste(getwd(), "/res.fdp.true.RData", sep = ""))
+save(res.fdp.nocov, file = paste(dir.pbeta1, "/res.fdp.nocov.RData", sep = ""))
+save(res.fdp.cov, file = paste(dir.pbeta1, "/res.fdp.cov.RData", sep = ""))
+save(res.fdp.ebp, file = paste(dir.pbeta1, "/res.fdp.ebp.RData", sep = ""))
+save(res.fdp.g.ebp, file = paste(dir.pbeta1, "/res.fdp.g.ebp.RData", sep = ""))
+save(res.fdp.aic, file = paste(dir.pbeta1, "/res.fdp.aic.RData", sep = ""))
+save(res.fdp.true, file = paste(dir.pbeta1, "/res.fdp.true.RData", sep = ""))
 
-save(sd.res.auc.nocov, file = paste(getwd(), "/sd.res.auc.nocov.RData", sep = ""))
-save(sd.res.auc.cov, file = paste(getwd(), "/sd.res.auc.cov.RData", sep = ""))
-save(sd.res.auc.ebp, file = paste(getwd(), "/sd.res.auc.ebp.RData", sep = ""))
-save(sd.res.auc.g.ebp, file = paste(getwd(), "/sd.res.auc.g.ebp.RData", sep = ""))
-save(sd.res.auc.aic, file = paste(getwd(), "/sd.res.auc.aic.RData", sep = ""))
-save(sd.res.auc.true, file = paste(getwd(), "/sd.res.auc.true.RData", sep = ""))
-save(sd.res.auc.aebp, file = paste(getwd(), "/sd.res.auc.aebp.RData", sep = ""))
-save(sd.res.auc.g.aebp, file = paste(getwd(), "/sd.res.auc.g.aebp.RData", sep = ""))
+save(sd.res.auc.nocov, file = paste(dir.pbeta1, "/sd.res.auc.nocov.RData", sep = ""))
+save(sd.res.auc.cov, file = paste(dir.pbeta1, "/sd.res.auc.cov.RData", sep = ""))
+save(sd.res.auc.ebp, file = paste(dir.pbeta1, "/sd.res.auc.ebp.RData", sep = ""))
+save(sd.res.auc.g.ebp, file = paste(dir.pbeta1, "/sd.res.auc.g.ebp.RData", sep = ""))
+save(sd.res.auc.aic, file = paste(dir.pbeta1, "/sd.res.auc.aic.RData", sep = ""))
+save(sd.res.auc.true, file = paste(dir.pbeta1, "/sd.res.auc.true.RData", sep = ""))
+save(sd.res.auc.aebp, file = paste(dir.pbeta1, "/sd.res.auc.aebp.RData", sep = ""))
+save(sd.res.auc.g.aebp, file = paste(dir.pbeta1, "/sd.res.auc.g.aebp.RData", sep = ""))
 
 
 
-save(sd.res.fdp.nocov, file = paste(getwd(), "/sd.res.fdp.nocov.RData", sep = ""))
-save(sd.res.fdp.cov, file = paste(getwd(), "/sd.res.fdp.cov.RData", sep = ""))
-save(sd.res.fdp.ebp, file = paste(getwd(), "/sd.res.fdp.ebp.RData", sep = ""))
-save(sd.res.fdp.g.ebp, file = paste(getwd(), "/sd.res.fdp.g.ebp.RData", sep = ""))
-save(sd.res.fdp.aic, file = paste(getwd(), "/sd.res.fdp.aic.RData", sep = ""))
-save(sd.res.fdp.true, file = paste(getwd(), "/sd.res.fdp.true.RData", sep = ""))
+save(sd.res.fdp.nocov, file = paste(dir.pbeta1, "/sd.res.fdp.nocov.RData", sep = ""))
+save(sd.res.fdp.cov, file = paste(dir.pbeta1, "/sd.res.fdp.cov.RData", sep = ""))
+save(sd.res.fdp.ebp, file = paste(dir.pbeta1, "/sd.res.fdp.ebp.RData", sep = ""))
+save(sd.res.fdp.g.ebp, file = paste(dir.pbeta1, "/sd.res.fdp.g.ebp.RData", sep = ""))
+save(sd.res.fdp.aic, file = paste(dir.pbeta1, "/sd.res.fdp.aic.RData", sep = ""))
+save(sd.res.fdp.true, file = paste(dir.pbeta1, "/sd.res.fdp.true.RData", sep = ""))
 
 
 # auc of those methods: 
