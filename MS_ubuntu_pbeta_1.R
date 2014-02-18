@@ -1,29 +1,50 @@
 # source("http://bioconductor.org/biocLite.R")
-# biocLite("qvalue")
+# pkgs <- rownames(installed.packages())
+# biocLite(pkgs, type="source")
+source("http://bioconductor.org/biocLite.R")
+biocLite("egdeR")
+library("edgeR")
 #sessionInfo()
-setwd("P:/FDR dependence/Model Selection/logoffset_in_simulation_logoffset_in_model_negative_beta_positive_beta_50_50/result/pbeta_1")
-getwd()
-
+#setwd("P:/FDR dependence/Model Selection/logoffset_in_simulation_logoffset_in_model_negative_beta_positive_beta_50_50/result/pbeta_1")
+mainDir <- "/home/ntyet/research/modelselection"
+pbeta1 <- "pbeta_1"
+dir.create(file.path(mainDir, pbeta1), showWarnings = FALSE)
+sources <- "sources"
+dir.create(file.path(mainDir, sources), showWarnings = FALSE)
+dir.source <- file.path(mainDir, sources)
+dir.pbeta1 <- file.path(mainDir, pbeta1)
+setwd(dir.pbeta1)
+#file.path(mainDir, subDir
 library("xtable")
 library("plyr")
 library("edgeR")
-library("qvalue")
+#library("qvalue")
 #library("QuasiSeq")
 #detach("QuasiSeq")
 library("maps")
 library(clinfun)
 library("fields")
+#install.packages("fdrtool")
 library("fdrtool")
-source('P:/qvalue_1.34.0/qvalue/R/qvalue_m0.R')
+source(paste(dir.source, '/qvalue_1.34.0/qvalue/R/qvalue_m0.R', sep = ""))
 source("http://www.public.iastate.edu/~dnett/microarray/multtest.txt")
-source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/hybrid-poisson-test-vc.R")
-source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified0.R")
-source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified1.R")
-source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/fdrtool_1.2.10/fdrtool/R/ecdf.pval.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.fit2.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\NBDev.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\PoisDev.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
+source(paste(dir.source, "/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/hybrid-poisson-test-vc.R", sep = ""))
+source(paste(dir.source, "/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified0.R",sep =""))
+source(paste(dir.source, "/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified1.R",sep =""))
+source(paste(dir.source, "/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/fdrtool_1.2.10/fdrtool/R/ecdf.pval.R",sep =""))
+source(paste(dir.source, "\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.fit2.R",sep=""))
+source(paste(dir.source, "\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\NBDev.R",sep =""))
+source(paste(dir.source, "\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\PoisDev.R",sep =""))
+source(paste(dir.source, "\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R",sep =""))
+
+# source("P/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/hybrid-poisson-test-vc.R")
+# source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified0.R")
+# source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified1.R")
+# source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/fdrtool_1.2.10/fdrtool/R/ecdf.pval.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.fit2.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\NBDev.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\PoisDev.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
 
 # # RFI output data
 # dat <- read.table("U:/R/RA/Data/RFI_uniq_comb_count_corrected.txt")
@@ -70,10 +91,15 @@ source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
 # source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
 
 # Load RFI count.mean and NBdisp from model0RFI.line
+ 
 
+#load(file = "U:/R/RA/Data/Additional Plot/Model0.line.rfi.RData")
+#load(file = "U:/R/RA/Data/Additional Plot/Model0.result.line.rfi.RData")
 
-load(file = "U:/R/RA/Data/Additional Plot/Model0.line.rfi.RData")
-load(file = "U:/R/RA/Data/Additional Plot/Model0.result.line.rfi.RData")
+load(file ="/run/user/1000/gvfs/smb-share:server=cyfiles.iastate.edu,share=09/22/ntyet//R/RA/Data/Additional Plot/Model0.line.rfi.RData")
+load(file ="/run/user/1000/gvfs/smb-share:server=cyfiles.iastate.edu,share=09/22/ntyet//R/RA/Data/Additional Plot/Model0.result.line.rfi.RData")
+# load(file = paste(dir.source, "/Model0.line.rfi.RData",sep = ""))
+# load(file = paste(dir.source,"/Model0.result.line.rfi.RData",sep = ""))
 #counts <- as.matrix(dat2[rowSums(dat2>0)>1&
 #                           rowMeans(dat2)>1,])
 #################################################
@@ -524,8 +550,93 @@ sd.res.fdp.true <- array(0, dim=c(length(p.beta), length(i.beta), length(S), len
 ##############
 # i <- 5; j <- 1;k <- 1; l <- 2; m <- 1
 
+# for(i in 5){
+#   for(j in 1:length(i.beta)){
+#     for(k in 1:length(S)){
+#       for(l in 1:length(U)){
+#         for(m in 1:n.sim){
+#           sim1 <- sim.QLfit(p.beta[i], i.beta[j], e.beta[j], S[k], L[l], U[l])
+#           pathsave <- paste(getwd(), 
+#                             "/p.beta_",
+#                             p.beta[i], 
+#                             "i.beta_",
+#                             i.beta[j],
+#                             "e.beta_",
+#                             e.beta[j],
+#                             "S_",
+#                             S[k],
+#                             "L_",
+#                             L[l],
+#                             "U_",
+#                             U[l],
+#                             "m_",
+#                             m,
+#                             ".RData",sep = "")
+#           save(sim1, file = pathsave)
+#           auc.nocov[i,j,k,l,m] <- sim1$auc.nocov
+#           auc.cov[i,j,k,l,m] <- sim1$auc.cov
+#           auc.ebp[i,j,k,l,m] <- sim1$auc.ebp
+#           auc.g.ebp[i,j,k,l,m] <- sim1$auc.g.ebp
+#           auc.aic[i,j,k,l,m] <- sim1$auc.aic
+#           auc.true[i,j,k,l,m] <- sim1$auc.true
+#           auc.aebp[i,j,k,l,m] <- sim1$auc.aebp
+#           auc.g.aebp[i,j,k,l,m] <- sim1$auc.g.aebp
+#           
+#           fdp.nocov[i,j,k,l,m, ] <- sim1$fdp.nocov
+#           fdp.cov[i,j,k,l,m, ] <- sim1$fdp.cov
+#           fdp.ebp[i,j,k,l,m, ] <- sim1$fdp.ebp
+#           fdp.g.ebp[i,j,k,l,m, ] <- sim1$fdp.g.ebp
+#           fdp.aic[i,j,k,l,m, ] <- sim1$fdp.aic
+#           fdp.true[i,j,k,l,m, ] <- sim1$fdp.true
+#           print(paste("i = ", i, ",j = ", j, ",k = ", k, ",l = ", l, ",m = ", m))
+#         }
+#         res.auc.nocov[i,j,k,l] <- mean(auc.nocov[i,j,k,l,])
+#         res.auc.cov[i,j,k,l] <- mean(auc.cov[i,j,k,l,])
+#         res.auc.ebp[i,j,k,l] <- mean(auc.ebp[i,j,k,l,])
+#         res.auc.g.ebp[i,j,k,l] <- mean(auc.g.ebp[i,j,k,l,])
+#         res.auc.aic[i,j,k,l] <- mean(auc.aic[i,j,k,l,])
+#         res.auc.true[i,j,k,l] <- mean(auc.true[i,j,k,l,])
+#         res.auc.aebp[i,j,k,l] <- mean(auc.aebp[i,j,k,l,])
+#         res.auc.g.aebp[i,j,k,l] <- mean(auc.g.aebp[i,j,k,l,])
+#         
+#         sd.res.auc.nocov[i,j,k,l] <- sd(auc.nocov[i,j,k,l,])
+#         sd.res.auc.cov[i,j,k,l] <- sd(auc.cov[i,j,k,l,])
+#         sd.res.auc.ebp[i,j,k,l] <- sd(auc.ebp[i,j,k,l,])
+#         sd.res.auc.g.ebp[i,j,k,l] <- sd(auc.g.ebp[i,j,k,l,])
+#         sd.res.auc.aic[i,j,k,l] <- sd(auc.aic[i,j,k,l,])
+#         sd.res.auc.true[i,j,k,l] <- sd(auc.true[i,j,k,l,])
+#         sd.res.auc.aebp[i,j,k,l] <- sd(auc.aebp[i,j,k,l,])
+#         sd.res.auc.g.aebp[i,j,k,l] <- sd(auc.g.aebp[i,j,k,l,])
+#         
+#         
+#         
+#         res.fdp.nocov[i,j,k,l,] <- apply(fdp.nocov[i,j,k,l,,], 2, mean)
+#         res.fdp.cov[i,j,k,l,] <- apply(fdp.cov[i,j,k,l,,], 2, mean)
+#         res.fdp.ebp[i,j,k,l,] <- apply(fdp.ebp[i,j,k,l,,], 2, mean)
+#         res.fdp.g.ebp[i,j,k,l,] <- apply(fdp.g.ebp[i,j,k,l,,], 2, mean)
+#         res.fdp.aic[i,j,k,l,] <- apply(fdp.aic[i,j,k,l,,], 2, mean)
+#         res.fdp.true[i,j,k,l,] <- apply(fdp.true[i,j,k,l,,], 2, mean)
+#         
+#         
+#         sd.res.fdp.nocov[i,j,k,l,] <- apply(fdp.nocov[i,j,k,l,,], 2, sd)
+#         sd.res.fdp.cov[i,j,k,l,] <- apply(fdp.cov[i,j,k,l,,], 2, sd)
+#         sd.res.fdp.ebp[i,j,k,l,] <- apply(fdp.ebp[i,j,k,l,,], 2, sd)
+#         sd.res.fdp.g.ebp[i,j,k,l,] <- apply(fdp.g.ebp[i,j,k,l,,], 2, sd)
+#         sd.res.fdp.aic[i,j,k,l,] <- apply(fdp.aic[i,j,k,l,,], 2, sd)
+#         sd.res.fdp.true[i,j,k,l,] <- apply(fdp.true[i,j,k,l,,], 2, sd)
+#         
+#       }
+#     }
+#   }
+#   
+# }
+# 
+# 
+
+
+
 for(i in 5){
-  for(j in 1:length(i.beta)){
+  for(j in length(i.beta)){
     for(k in 1:length(S)){
       for(l in 1:length(U)){
         for(m in 1:n.sim){
@@ -604,6 +715,7 @@ for(i in 5){
   }
   
 }
+
 traceback()
 save(res.auc.nocov, file = paste(getwd(), "/res.auc.nocov.RData", sep = ""))
 save(res.auc.cov, file = paste(getwd(), "/res.auc.cov.RData", sep = ""))
