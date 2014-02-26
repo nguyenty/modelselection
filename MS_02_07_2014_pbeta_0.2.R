@@ -1,32 +1,115 @@
-# source("http://bioconductor.org/biocLite.R")
-# biocLite("qvalue")
-setwd("P:/FDR dependence/Model Selection/logoffset_in_simulation_logoffset_in_model_negative_beta_positive_beta_50_50/result/pbeta_0.2")
-getwd()
+ source("http://bioconductor.org/biocLite.R")
+# biocLite("egdeR")
+library("edgeR")
+ biocLite("qvalue")
+#sessionInfo()
+# setwd("P:/FDR dependence/Model Selection/logoffset_in_simulation_logoffset_in_model_negative_beta_positive_beta_50_50/result/pbeta_1")
+# dir.pbeta1
 library("xtable")
 library("plyr")
 library("edgeR")
-library("qvalue")
+#library("qvalue")
 #library("QuasiSeq")
+#detach("QuasiSeq")
 library("maps")
 library(clinfun)
 library("fields")
 library("fdrtool")
-source('P:/qvalue_1.34.0/qvalue/R/qvalue_m0.R')
+
+mainDir <- "/home/ntyet/research/modelselection" # linux
+#mainDir <- "P:/research/modelselection" # Windows
+pbeta1 <- "pbeta_0.2"
+dir.create(file.path(mainDir, pbeta1), showWarnings = FALSE)
+sources <- "sources"
+dir.create(file.path(mainDir, sources), showWarnings = FALSE)
+dir.source <- file.path(mainDir, sources)
+dir.pbeta1 <- file.path(mainDir, pbeta1)
+# setwd(dir.pbeta1)
+# dir.pbeta1
+# for windows: 
+# source('P:/qvalue_1.34.0/qvalue/R/qvalue_m0.R')
+# source("http://www.public.iastate.edu/~dnett/microarray/multtest.txt")
+# source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/hybrid-poisson-test-vc.R")
+# source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified0.R")
+# source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified1.R")
+# source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/fdrtool_1.2.10/fdrtool/R/ecdf.pval.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.fit2.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\NBDev.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\PoisDev.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
+
+
+# for linux 
+source(paste(dir.source, '/qvalue_1.34.0/qvalue/R/qvalue_m0.R', sep = ""))
 source("http://www.public.iastate.edu/~dnett/microarray/multtest.txt")
-source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/hybrid-poisson-test-vc.R")
-source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified0.R")
-source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified1.R")
-source("P:/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/fdrtool_1.2.10/fdrtool/R/ecdf.pval.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.fit2.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\NBDev.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\PoisDev.R")
-source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
+source(paste(dir.source, "/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/hybrid-poisson-test-vc.R", sep = ""))
+source(paste(dir.source, "/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified0.R",sep =""))
+source(paste(dir.source, "/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/Hyprid_poisson_test_vc_modified1.R",sep =""))
+source(paste(dir.source, "/QuasiSeq_Method_CompareFDR_BH_EBP_AHB_m0/fdrtool_1.2.10/fdrtool/R/ecdf.pval.R",sep =""))
+source(paste(dir.source, "/stevescode/QuasiSeq_1.0-2/QuasiSeq/R/QL.fit2.R",sep=""))
+source(paste(dir.source, "/stevescode/QuasiSeq_1.0-2/QuasiSeq/R/NBDev.R",sep =""))
+source(paste(dir.source, "/stevescode/QuasiSeq_1.0-2/QuasiSeq/R/PoisDev.R",sep =""))
+source(paste(dir.source, "/stevescode/QuasiSeq_1.0-2/QuasiSeq/R/QL.results.R",sep =""))
+
+
+# # RFI output data
+# dat <- read.table("U:/R/RA/Data/RFI_uniq_comb_count_corrected.txt")
+# meta.data <- read.csv("U:/R/RA/Data/RIN values RNAseq Obj3a Martine.csv")
+# meta.data2 <- read.table("U:/R/RA/Data/Meta.data2.txt")
+# 
+# name <- paste("X",meta.data$Sample.Name, sep = "")
+# dat2 <- dat[, name]
+# #colnames(dat2)
+# Lane.RNAseq <- as.factor(meta.data$Lane.RNAseq)
+# Diet <- meta.data$diet
+# Line <- meta.data$line
+# #RFI.value <- meta.data2$RFI.value
+# RFI.value <- meta.data2$RFI.value
+# RIN.before.GD <- meta.data$RIN.before.GD
+# RIN.after.GD  <- meta.data$RIN.after.GD
+# Conc.after.GD <- meta.data$Conc.after.GD.ng.ul
+# date.GD <- meta.data$date.GD
+# date.RNA.extraction <- meta.data$date.RNA.extraction
+# counts <- as.matrix(dat2[rowSums(dat2>0)>1&
+#                            rowMeans(dat2)>1,])
+# dim(counts)
+# 
+# summary(log(counts+1))
+# mean.1 <- apply(log(counts[,Line ==1]+1), 1, mean)
+# mean.2 <- apply(log(counts[,Line ==2]+1), 1, mean)
+# summary(mean.1 - mean.2)
+# 
+# wd <- "P:\\FDR dependence\\Model Selection\\logoffset_in_simulation_logoffset_in_model_negative_beta_positive_beta_50_50\\result\\pbeta_1"
+# 
+# sim.dat1 <- load(file = paste(wd, "\\p.beta_1i.beta_1.5e.beta_2S_2L_0.1U_0.5m_29.RData", sep = ""))
+# str(sim.dat1)
+# counts <- sim1$counts
+# summary(log(counts+1))
+# mean.1 <- apply(log(counts[,1:20]+1), 1, mean)
+# mean.2 <- apply(log(counts[,21:40]+1), 1, mean)
+# summary(mean.1 - mean.2)
+# str(sim1)
+
+
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.fit2.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\NBDev.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\PoisDev.R")
+# source("P:\\stevescode\\QuasiSeq_1.0-2\\QuasiSeq\\R\\QL.results.R")
 
 # Load RFI count.mean and NBdisp from model0RFI.line
 
+# 
+# load(file = "U:/R/RA/Data/Additional Plot/Model0.line.rfi.RData")
+# load(file = "U:/R/RA/Data/Additional Plot/Model0.result.line.rfi.RData")
 
-load(file = "U:/R/RA/Data/Additional Plot/Model0.line.rfi.RData")
-load(file = "U:/R/RA/Data/Additional Plot/Model0.result.line.rfi.RData")
+#load(file = "U:/R/RA/Data/Additional Plot/Model0.line.rfi.RData")
+#load(file = "U:/R/RA/Data/Additional Plot/Model0.result.line.rfi.RData")
+# 
+# load(file ="/run/user/1000/gvfs/smb-share:server=cyfiles.iastate.edu,share=09/22/ntyet//R/RA/Data/Additional Plot/Model0.line.rfi.RData")
+# load(file ="/run/user/1000/gvfs/smb-share:server=cyfiles.iastate.edu,share=09/22/ntyet//R/RA/Data/Additional Plot/Model0.result.line.rfi.RData")
+load(file = paste(dir.source, "/Model0.line.rfi.RData",sep = ""))
+load(file = paste(dir.source,"/Model0.result.line.rfi.RData",sep = ""))
+
 #counts <- as.matrix(dat2[rowSums(dat2>0)>1&
 #                           rowMeans(dat2)>1,])
 #################################################
@@ -134,7 +217,7 @@ fdp <- function(pvalue, qvalue.threshold){
     } else{
       out[i] <- sum((q.value<=qvalue.threshold[i])&(1:J>DE))/sum(q.value<=qvalue.threshold[i])
     }
-  }
+}
   return(out)
 }
 
@@ -153,15 +236,21 @@ sim.counts <- function(p.beta, i.beta, e.beta, S, L, U){
   b2 <- NULL
   
   # generate phi and covariate x
-  
-  for(i in 1:I){
-    for(k in 1:K){
-      x[i,k] <- rnorm(1,0,1)
-      #phi[i,k] <- rnorm(1,0,.125^2)
-      phi[i,k] <- rnorm(1,0,0)
-    }
+  for(k in 1:K){
+    x[1,k] <- x[2,k] <- rnorm(1,0,1)
+    #phi[i,k] <- rnorm(1,0,.125^2)
+    phi[1,k] <- phi[2,k] <- rnorm(1,0,0)
   }
   
+#   
+#   for(i in 1:I){
+#     for(k in 1:K){
+#       x[i,k] <- rnorm(1,0,1)
+#       #phi[i,k] <- rnorm(1,0,.125^2)
+#       phi[i,k] <- rnorm(1,0,0)
+#     }
+#   }
+
   # genetating beta which is the coefficients of covariates
   
   beta.ind <- NULL
@@ -233,7 +322,10 @@ sim.counts <- function(p.beta, i.beta, e.beta, S, L, U){
 # p.beta <- 1
 # i.beta <- .1
 # e.beta <- .5
-
+# I
+# J
+# K
+# sim.counts(p.beta, i.beta, e.beta, S, L, U)
 
 sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
   sim.data <- sim.counts(p.beta, i.beta, e.beta, S, L, U)
@@ -243,13 +335,13 @@ sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
   design.list <- vector("list",2)
   design.list[[1]] <- rep(1:2, each = K)
   design.list[[2]] <- rep(1, ncol(counts))
+  #size <- apply(counts, 2, quantile, .75)
   size <- apply(counts, 2, sum)
-  
   fit <- QL.fit(counts, design.list, 
+             #   log.offset = log(size),
                 Model = "NegBin",
-           #     log.offset = log(size),
                 print.progress=FALSE)
-  
+  #traceback()
   result.fit <- QL.results(fit, Plot=FALSE)
   
   #############################################################
@@ -263,8 +355,8 @@ sim.QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
   test.mat <- rbind(1:2, c(1,3))
   row.names(test.mat) <- c("Covariate", "Treatment")
   fit.2 <- QL.fit(counts, design.list, 
+                 # log.offset = log(size),
                   test.mat,
-                  #log.offset = log(size),
                   Model="NegBin", 
                   print.progress=FALSE)
   
@@ -373,7 +465,7 @@ S <- c(1.25, 2)
 L <- c(0.1 ,1.5)
 U <- c(0.5, 2)
 
-n.sim <- 100
+n.sim <- 50
 auc.nocov <- array(0, dim=c(length(p.beta), length(i.beta), length(S), length(L), n.sim))
 auc.cov <- array(0, dim=c(length(p.beta), length(i.beta), length(S), length(L), n.sim))
 auc.ebp <- array(0, dim=c(length(p.beta), length(i.beta), length(S), length(L), n.sim))
@@ -483,7 +575,7 @@ for(i in 2){
       for(l in 1:length(U)){
         for(m in 1:n.sim){
           sim1 <- sim.QLfit(p.beta[i], i.beta[j], e.beta[j], S[k], L[l], U[l])
-          pathsave <- paste(getwd(), 
+          pathsave <- paste(dir.pbeta1, 
                             "/p.beta_",
                             p.beta[i], 
                             "i.beta_",
@@ -557,40 +649,40 @@ for(i in 2){
   }
   
 }
+traceback()
+save(res.auc.nocov, file = paste(dir.pbeta1, "/res.auc.nocov.RData", sep = ""))
+save(res.auc.cov, file = paste(dir.pbeta1, "/res.auc.cov.RData", sep = ""))
+save(res.auc.ebp, file = paste(dir.pbeta1, "/res.auc.ebp.RData", sep = ""))
+save(res.auc.g.ebp, file = paste(dir.pbeta1, "/res.auc.g.ebp.RData", sep = ""))
+save(res.auc.aic, file = paste(dir.pbeta1, "/res.auc.aic.RData", sep = ""))
+save(res.auc.true, file = paste(dir.pbeta1, "/res.auc.true.RData", sep = ""))
+save(res.auc.aebp, file = paste(dir.pbeta1, "/res.auc.aebp.RData", sep = ""))
+save(res.auc.g.aebp, file = paste(dir.pbeta1, "/res.auc.g.aebp.RData", sep = ""))
 
-save(res.auc.nocov, file = paste(getwd(), "/res.auc.nocov.RData", sep = ""))
-save(res.auc.cov, file = paste(getwd(), "/res.auc.cov.RData", sep = ""))
-save(res.auc.ebp, file = paste(getwd(), "/res.auc.ebp.RData", sep = ""))
-save(res.auc.g.ebp, file = paste(getwd(), "/res.auc.g.ebp.RData", sep = ""))
-save(res.auc.aic, file = paste(getwd(), "/res.auc.aic.RData", sep = ""))
-save(res.auc.true, file = paste(getwd(), "/res.auc.true.RData", sep = ""))
-save(res.auc.aebp, file = paste(getwd(), "/res.auc.aebp.RData", sep = ""))
-save(res.auc.g.aebp, file = paste(getwd(), "/res.auc.g.aebp.RData", sep = ""))
+save(res.fdp.nocov, file = paste(dir.pbeta1, "/res.fdp.nocov.RData", sep = ""))
+save(res.fdp.cov, file = paste(dir.pbeta1, "/res.fdp.cov.RData", sep = ""))
+save(res.fdp.ebp, file = paste(dir.pbeta1, "/res.fdp.ebp.RData", sep = ""))
+save(res.fdp.g.ebp, file = paste(dir.pbeta1, "/res.fdp.g.ebp.RData", sep = ""))
+save(res.fdp.aic, file = paste(dir.pbeta1, "/res.fdp.aic.RData", sep = ""))
+save(res.fdp.true, file = paste(dir.pbeta1, "/res.fdp.true.RData", sep = ""))
 
-save(res.fdp.nocov, file = paste(getwd(), "/res.fdp.nocov.RData", sep = ""))
-save(res.fdp.cov, file = paste(getwd(), "/res.fdp.cov.RData", sep = ""))
-save(res.fdp.ebp, file = paste(getwd(), "/res.fdp.ebp.RData", sep = ""))
-save(res.fdp.g.ebp, file = paste(getwd(), "/res.fdp.g.ebp.RData", sep = ""))
-save(res.fdp.aic, file = paste(getwd(), "/res.fdp.aic.RData", sep = ""))
-save(res.fdp.true, file = paste(getwd(), "/res.fdp.true.RData", sep = ""))
-
-save(sd.res.auc.nocov, file = paste(getwd(), "/sd.res.auc.nocov.RData", sep = ""))
-save(sd.res.auc.cov, file = paste(getwd(), "/sd.res.auc.cov.RData", sep = ""))
-save(sd.res.auc.ebp, file = paste(getwd(), "/sd.res.auc.ebp.RData", sep = ""))
-save(sd.res.auc.g.ebp, file = paste(getwd(), "/sd.res.auc.g.ebp.RData", sep = ""))
-save(sd.res.auc.aic, file = paste(getwd(), "/sd.res.auc.aic.RData", sep = ""))
-save(sd.res.auc.true, file = paste(getwd(), "/sd.res.auc.true.RData", sep = ""))
-save(sd.res.auc.aebp, file = paste(getwd(), "/sd.res.auc.aebp.RData", sep = ""))
-save(sd.res.auc.g.aebp, file = paste(getwd(), "/sd.res.auc.g.aebp.RData", sep = ""))
+save(sd.res.auc.nocov, file = paste(dir.pbeta1, "/sd.res.auc.nocov.RData", sep = ""))
+save(sd.res.auc.cov, file = paste(dir.pbeta1, "/sd.res.auc.cov.RData", sep = ""))
+save(sd.res.auc.ebp, file = paste(dir.pbeta1, "/sd.res.auc.ebp.RData", sep = ""))
+save(sd.res.auc.g.ebp, file = paste(dir.pbeta1, "/sd.res.auc.g.ebp.RData", sep = ""))
+save(sd.res.auc.aic, file = paste(dir.pbeta1, "/sd.res.auc.aic.RData", sep = ""))
+save(sd.res.auc.true, file = paste(dir.pbeta1, "/sd.res.auc.true.RData", sep = ""))
+save(sd.res.auc.aebp, file = paste(dir.pbeta1, "/sd.res.auc.aebp.RData", sep = ""))
+save(sd.res.auc.g.aebp, file = paste(dir.pbeta1, "/sd.res.auc.g.aebp.RData", sep = ""))
 
 
 
-save(sd.res.fdp.nocov, file = paste(getwd(), "/sd.res.fdp.nocov.RData", sep = ""))
-save(sd.res.fdp.cov, file = paste(getwd(), "/sd.res.fdp.cov.RData", sep = ""))
-save(sd.res.fdp.ebp, file = paste(getwd(), "/sd.res.fdp.ebp.RData", sep = ""))
-save(sd.res.fdp.g.ebp, file = paste(getwd(), "/sd.res.fdp.g.ebp.RData", sep = ""))
-save(sd.res.fdp.aic, file = paste(getwd(), "/sd.res.fdp.aic.RData", sep = ""))
-save(sd.res.fdp.true, file = paste(getwd(), "/sd.res.fdp.true.RData", sep = ""))
+save(sd.res.fdp.nocov, file = paste(dir.pbeta1, "/sd.res.fdp.nocov.RData", sep = ""))
+save(sd.res.fdp.cov, file = paste(dir.pbeta1, "/sd.res.fdp.cov.RData", sep = ""))
+save(sd.res.fdp.ebp, file = paste(dir.pbeta1, "/sd.res.fdp.ebp.RData", sep = ""))
+save(sd.res.fdp.g.ebp, file = paste(dir.pbeta1, "/sd.res.fdp.g.ebp.RData", sep = ""))
+save(sd.res.fdp.aic, file = paste(dir.pbeta1, "/sd.res.fdp.aic.RData", sep = ""))
+save(sd.res.fdp.true, file = paste(dir.pbeta1, "/sd.res.fdp.true.RData", sep = ""))
 
 
 # auc of those methods: 
@@ -600,22 +692,22 @@ i <- 2
 ind <- expand.grid(j = c(1,2), k = c(1,2), l = c(1,2))
 
 auc.all <-function(x) {c(     paste(round(res.auc.nocov[i,ind[x,1],ind[x,2],ind[x,3]], 4),"(",
-                                    round(sd.res.auc.nocov[i,ind[x,1],ind[x,2],ind[x,3]], 4),")", sep = ""),
-                              
-                              paste(round(res.auc.cov[i,ind[x,1],ind[x,2],ind[x,3]], 4),"(",
-                                    round(sd.res.auc.cov[i,ind[x,1],ind[x,2],ind[x,3]], 4),")",sep =""),
-                              paste(round(res.auc.ebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),"(",
-                                    round(sd.res.auc.ebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),")",sep = ""),
-                              paste(round(res.auc.g.ebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),"(",
-                                    round(sd.res.auc.g.ebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),")",sep=""),
-                              paste(round(res.auc.aic[i,ind[x,1],ind[x,2],ind[x,3]], 4),"(",
-                                    round(sd.res.auc.aic[i,ind[x,1],ind[x,2],ind[x,3]], 4),")",sep=""),
-                              paste(round(res.auc.true[i,ind[x,1],ind[x,2],ind[x,3]], 4),"(",
-                                    round(sd.res.auc.true[i,ind[x,1],ind[x,2],ind[x,3]], 4),")",sep = ""),
-                              paste(round(res.auc.aebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),"(",
-                                    round(sd.res.auc.aebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),")",sep=""),
-                              paste(round(res.auc.g.aebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),"(",
-                                    round(sd.res.auc.g.aebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),")",sep="")
+                round(sd.res.auc.nocov[i,ind[x,1],ind[x,2],ind[x,3]], 4),")", sep = ""),
+              
+                paste(round(res.auc.cov[i,ind[x,1],ind[x,2],ind[x,3]], 4),"(",
+                round(sd.res.auc.cov[i,ind[x,1],ind[x,2],ind[x,3]], 4),")",sep =""),
+                paste(round(res.auc.ebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),"(",
+                round(sd.res.auc.ebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),")",sep = ""),
+                paste(round(res.auc.g.ebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),"(",
+                round(sd.res.auc.g.ebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),")",sep=""),
+                paste(round(res.auc.aic[i,ind[x,1],ind[x,2],ind[x,3]], 4),"(",
+                round(sd.res.auc.aic[i,ind[x,1],ind[x,2],ind[x,3]], 4),")",sep=""),
+                paste(round(res.auc.true[i,ind[x,1],ind[x,2],ind[x,3]], 4),"(",
+                round(sd.res.auc.true[i,ind[x,1],ind[x,2],ind[x,3]], 4),")",sep = ""),
+                paste(round(res.auc.aebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),"(",
+                round(sd.res.auc.aebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),")",sep=""),
+                paste(round(res.auc.g.aebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),"(",
+                round(sd.res.auc.g.aebp[i,ind[x,1],ind[x,2],ind[x,3]], 4),")",sep="")
 )}
 
 
@@ -651,18 +743,18 @@ xtable(auc.out)
 
 
 fdp.all <-function(x) {c(     paste(round(res.fdp.nocov[i,ind[x,1],ind[x,2],ind[x,3],1], 4),"(",
-                                    round(sd.res.fdp.nocov[i,ind[x,1],ind[x,2],ind[x,3],1], 4),")", sep = ""),
-                              
-                              paste(round(res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],1], 4),"(",
-                                    round(sd.res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],1], 4),")",sep =""),
-                              paste(round(res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],1], 4),"(",
-                                    round(sd.res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],1], 4),")",sep = ""),
-                              paste(round(res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],1], 4),"(",
-                                    round(sd.res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],1], 4),")",sep=""),
-                              paste(round(res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],1], 4),"(",
-                                    round(sd.res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],1], 4),")",sep=""),
-                              paste(round(res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],1], 4),"(",
-                                    round(sd.res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],1], 4),")",sep = "")
+                                round(sd.res.fdp.nocov[i,ind[x,1],ind[x,2],ind[x,3],1], 4),")", sep = ""),
+                          
+                          paste(round(res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],1], 4),"(",
+                                round(sd.res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],1], 4),")",sep =""),
+                          paste(round(res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],1], 4),"(",
+                                round(sd.res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],1], 4),")",sep = ""),
+                          paste(round(res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],1], 4),"(",
+                                round(sd.res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],1], 4),")",sep=""),
+                          paste(round(res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],1], 4),"(",
+                                round(sd.res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],1], 4),")",sep=""),
+                          paste(round(res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],1], 4),"(",
+                                round(sd.res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],1], 4),")",sep = "")
 )}
 
 
@@ -696,18 +788,18 @@ xtable(fdp.out)
 #FDR = .05
 
 fdp.all <-function(x) {c(     paste(round(res.fdp.nocov[i,ind[x,1],ind[x,2],ind[x,3],2], 4),"(",
-                                    round(sd.res.fdp.nocov[i,ind[x,1],ind[x,2],ind[x,3],2], 4),")", sep = ""),
-                              
-                              paste(round(res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],2], 4),"(",
-                                    round(sd.res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],2], 4),")",sep =""),
-                              paste(round(res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],2], 4),"(",
-                                    round(sd.res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],2], 4),")",sep = ""),
-                              paste(round(res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],2], 4),"(",
-                                    round(sd.res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],2], 4),")",sep=""),
-                              paste(round(res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],2], 4),"(",
-                                    round(sd.res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],2], 4),")",sep=""),
-                              paste(round(res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],2], 4),"(",
-                                    round(sd.res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],2], 4),")",sep = "")
+                                round(sd.res.fdp.nocov[i,ind[x,1],ind[x,2],ind[x,3],2], 4),")", sep = ""),
+                          
+                          paste(round(res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],2], 4),"(",
+                                round(sd.res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],2], 4),")",sep =""),
+                          paste(round(res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],2], 4),"(",
+                                round(sd.res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],2], 4),")",sep = ""),
+                          paste(round(res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],2], 4),"(",
+                                round(sd.res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],2], 4),")",sep=""),
+                          paste(round(res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],2], 4),"(",
+                                round(sd.res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],2], 4),")",sep=""),
+                          paste(round(res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],2], 4),"(",
+                                round(sd.res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],2], 4),")",sep = "")
 )}
 
 #fdp
@@ -741,18 +833,18 @@ xtable(fdp.out)
 
 
 fdp.all <-function(x) {c(     paste(round(res.fdp.nocov[i,ind[x,1],ind[x,2],ind[x,3],3], 4),"(",
-                                    round(sd.res.fdp.nocov[i,ind[x,1],ind[x,2],ind[x,3],3], 4),")", sep = ""),
-                              
-                              paste(round(res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],3], 4),"(",
-                                    round(sd.res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],3], 4),")",sep =""),
-                              paste(round(res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],3], 4),"(",
-                                    round(sd.res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],3], 4),")",sep = ""),
-                              paste(round(res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],3], 4),"(",
-                                    round(sd.res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],3], 4),")",sep=""),
-                              paste(round(res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],3], 4),"(",
-                                    round(sd.res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],3], 4),")",sep=""),
-                              paste(round(res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],3], 4),"(",
-                                    round(sd.res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],3], 4),")",sep = "")
+                                round(sd.res.fdp.nocov[i,ind[x,1],ind[x,2],ind[x,3],3], 4),")", sep = ""),
+                          
+                          paste(round(res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],3], 4),"(",
+                                round(sd.res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],3], 4),")",sep =""),
+                          paste(round(res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],3], 4),"(",
+                                round(sd.res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],3], 4),")",sep = ""),
+                          paste(round(res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],3], 4),"(",
+                                round(sd.res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],3], 4),")",sep=""),
+                          paste(round(res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],3], 4),"(",
+                                round(sd.res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],3], 4),")",sep=""),
+                          paste(round(res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],3], 4),"(",
+                                round(sd.res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],3], 4),")",sep = "")
 )}
 
 
@@ -785,18 +877,18 @@ xtable(fdp.out)
 
 
 fdp.all <-function(x) {c(     paste(round(res.fdp.nocov[i,ind[x,1],ind[x,2],ind[x,3],4], 4),"(",
-                                    round(sd.res.fdp.nocov[i,ind[x,1],ind[x,2],ind[x,3],4], 4),")", sep = ""),
-                              
-                              paste(round(res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],4], 4),"(",
-                                    round(sd.res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],4], 4),")",sep =""),
-                              paste(round(res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],4], 4),"(",
-                                    round(sd.res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],4], 4),")",sep = ""),
-                              paste(round(res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],4], 4),"(",
-                                    round(sd.res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],4], 4),")",sep=""),
-                              paste(round(res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],4], 4),"(",
-                                    round(sd.res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],4], 4),")",sep=""),
-                              paste(round(res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],4], 4),"(",
-                                    round(sd.res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],4], 4),")",sep = "")
+                                round(sd.res.fdp.nocov[i,ind[x,1],ind[x,2],ind[x,3],4], 4),")", sep = ""),
+                          
+                          paste(round(res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],4], 4),"(",
+                                round(sd.res.fdp.cov[i,ind[x,1],ind[x,2],ind[x,3],4], 4),")",sep =""),
+                          paste(round(res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],4], 4),"(",
+                                round(sd.res.fdp.ebp[i,ind[x,1],ind[x,2],ind[x,3],4], 4),")",sep = ""),
+                          paste(round(res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],4], 4),"(",
+                                round(sd.res.fdp.g.ebp[i,ind[x,1],ind[x,2],ind[x,3],4], 4),")",sep=""),
+                          paste(round(res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],4], 4),"(",
+                                round(sd.res.fdp.aic[i,ind[x,1],ind[x,2],ind[x,3],4], 4),")",sep=""),
+                          paste(round(res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],4], 4),"(",
+                                round(sd.res.fdp.true[i,ind[x,1],ind[x,2],ind[x,3],4], 4),")",sep = "")
 )}
 
 
