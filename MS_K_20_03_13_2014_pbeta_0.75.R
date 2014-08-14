@@ -234,6 +234,7 @@ sim_counts <- function(p.beta, i.beta, e.beta, S, L, U){
               b = b))
 }
 
+# need to modify the sim_QLfit function to obtain pvalue from two different groups after classification
 
 sim_QLfit <- function(p.beta, i.beta, e.beta, S, L, U){
   
